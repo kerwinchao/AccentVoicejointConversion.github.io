@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Few-shots Voice Cloning in Noisy Acoustic Conditions with Domain Adversarial Training</title>
+</head>
+<body>
+
+<h2 align="center">Few-shots Voice Cloning in Noisy Acoustic Conditions with Domain Adversarial Training</h2>
+<div><b>Authors:</b> Jian Cong, Shan Yang, Lei Xie</div>
+<div><b>Abstract:</b> Data efﬁcient voice cloning can synthesis speech in voice of target speaker with few seconds clean reference audio. Nevertheless, in actual scenarios, users usually make recording in public, which often accompanied by background noise. We propose to use domain adversarial training algorithm for robust voice cloning with few samples. Results indicate, whether the reference audio is clean or noise, our proposed method can achieve close performance in terms of naturalness and similarity. And achieve better performance than pre-denoising to the reference audio with external speech enhancement module.
+</div>
+
+
+<h4>1. Examples clean audio, noisy audio and de-noised audio: </h4>
+<blockquote>
+<table border=1>
+<tr>
+    <td align="center"><span>speaker</span></td>
+    <td align="center"><span>clean audio(C)</span></td>
+    <td align="center"><span>noisy audio(N)<span></td>
+    <td align="center"><span>denoised audio(D)<span></td>
+</tr>
+<tr>
+    <td>001</td>
+    <td><audio controls><source src="samples/original/001_137.wav"></audio></td>
+    <td><audio controls><source src="samples/original/001n_137.wav"></audio></td>
+    <td><audio controls><source src="samples/original/001d_137.wav"></audio></td>
+</tr>
+<tr>
+    <td>045</td>
+    <td><audio controls><source src="samples/original/045_431.wav"></audio></td>
+    <td><audio controls><source src="samples/original/045n_431.wav"></audio></td>
+    <td><audio controls><source src="samples/original/045d_431.wav"></audio></td>
+</tr>
+<tr>
+    <td>012</td>
+    <td><audio controls><source src="samples/original/012_137.wav"></audio></td>
+    <td><audio controls><source src="samples/original/012n_137.wav"></audio></td>
+    <td><audio controls><source src="samples/original/012d_137.wav"></audio></td>
+</tr>
+<tr>
+    <td>093</td>
+    <td><audio controls><source src="samples/original/093_431.wav"></audio></td>
+    <td><audio controls><source src="samples/original/093n_431.wav"></audio></td>
+    <td><audio controls><source src="samples/original/001d_137.wav"></audio></td>
+</tr>
+
+</table>
+<br/>
+</blockquote>
+
+<h4>2. The results of speaker adaptaion: </h4>
+<blockquote>
+<table border=1>
+<tr>
+    <td rowspan="2" align="center"><span>Test set</span></td>
+    <td rowspan="2" align="center"><span>Original audio<span></td>
+    <td colspan="2" align="center"><span>Synthesized speech<span></td>
+
+</tr>
+<tr>
+    <td align="center"><span>Baseline model<span></td>
+    <td align="center"><span>Proposed model<span></td>
+
+</tr>
+<tr>
+    <td>001-C</td>
+    <td><audio controls><source src="samples/original/001_137.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/001-C-B/2.mel.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/001-C-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td><font color=red>001-N</font></td>
+    <td><audio controls><source src="samples/original/001n_137.wav"></audio></td>
+    <td  align="center">None</td>
+    <td><audio controls><source src="samples/sa/001-N-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td>001-D</td>
+    <td><audio controls><source src="samples/original/001d_137.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/001-D-B/2.mel.wav"></audio></td>
+    <td align="center">*</td>
+</tr>
+<tr>
+    <td>045-C</td>
+    <td><audio controls><source src="samples/original/045_431.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/045-C-B/2.mel.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/045-C-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td><font color=red>045-N</font></td>
+    <td><audio controls><source src="samples/original/045n_431.wav"></audio></td>
+    <td  align="center">None</td>
+    <td><audio controls><source src="samples/sa/045-N-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td>045-D</td>
+    <td><audio controls><source src="samples/original/045d_431.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/045-D-B/2.mel.wav"></audio></td>
+    <td align="center">*</td>
+</tr>
+<tr>
+    <td>012-C</td>
+    <td><audio controls><source src="samples/original/012_137.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/012-C-B/2.mel.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/012-C-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td><font color=red>012-N</font></td>
+    <td><audio controls><source src="samples/original/012n_137.wav"></audio></td>
+    <td  align="center">None</td>
+    <td><audio controls><source src="samples/sa/012-N-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td>012-D</td>
+    <td><audio controls><source src="samples/original/012d_137.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/012-D-B/2.mel.wav"></audio></td>  
+    <td align="center">*</td>
+</tr>
+<tr>
+    <td>093-C</td>
+    <td><audio controls><source src="samples/original/093_431.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/093-C-B/2.mel.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/093-C-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td><font color=red>093-N</font></td>
+    <td><audio controls><source src="samples/original/093n_431.wav"></audio></td>
+    <td  align="center">None</td>
+    <td><audio controls><source src="samples/sa/093-N-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td>093-D</td>
+    <td><audio controls><source src="samples/original/093d_431.wav"></audio></td>
+    <td><audio controls><source src="samples/sa/093-D-B/2.mel.wav"></audio></td>  
+    <td align="center">*</td>
+</tr>
+</table>
+<br/>
+</blockquote>
+
+<h4>2. The results of speaker encoding: </h4>
+<blockquote>
+<table border=1>
+<tr>
+    <td rowspan="2" align="center"><span>Test set</span></td>
+    <td rowspan="2" align="center"><span>Original audio<span></td>
+    <td colspan="2" align="center"><span>Synthesized speech<span></td>
+
+</tr>
+<tr>
+    <td align="center"><span>Baseline model<span></td>
+    <td align="center"><span>Proposed model<span></td>
+
+</tr>
+<tr>
+    <td>001-C</td>
+    <td><audio controls><source src="samples/original/001_137.wav"></audio></td>
+    <td><audio controls><source src="samples/se/001-C-B/2.mel.wav"></audio></td>
+    <td><audio controls><source src="samples/se/001-C-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td><font color=red>001-N</font></td>
+    <td><audio controls><source src="samples/original/001n_137.wav"></audio></td>
+    <td  align="center">None</td>
+    <td><audio controls><source src="samples/se/001-N-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td>001-D</td>
+    <td><audio controls><source src="samples/original/001d_137.wav"></audio></td>
+    <td><audio controls><source src="samples/se/001-D-B/2.mel.wav"></audio></td>
+    <td align="center">*</td>
+</tr>
+<tr>
+    <td>045-C</td>
+    <td><audio controls><source src="samples/original/045_431.wav"></audio></td>
+    <td><audio controls><source src="samples/se/045-C-B/2.mel.wav"></audio></td>
+    <td><audio controls><source src="samples/se/045-C-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td><font color=red>045-N</font></td>
+    <td><audio controls><source src="samples/original/045n_431.wav"></audio></td>
+    <td  align="center">None</td>
+    <td><audio controls><source src="samples/se/045-N-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td>045-D</td>
+    <td><audio controls><source src="samples/original/045d_431.wav"></audio></td>
+    <td><audio controls><source src="samples/se/045-D-B/2.mel.wav"></audio></td>
+    <td align="center">*</td>
+</tr>
+<tr>
+    <td>012-C</td>
+    <td><audio controls><source src="samples/original/012_137.wav"></audio></td>
+    <td><audio controls><source src="samples/se/012-C-B/2.mel.wav"></audio></td>
+    <td><audio controls><source src="samples/se/012-C-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td><font color=red>012-N</font></td>
+    <td><audio controls><source src="samples/original/012n_137.wav"></audio></td>
+    <td  align="center">None</td>
+    <td><audio controls><source src="samples/se/012-N-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td>012-D</td>
+    <td><audio controls><source src="samples/original/012d_137.wav"></audio></td>
+    <td><audio controls><source src="samples/se/012-D-B/2.mel.wav"></audio></td>  
+    <td align="center">*</td>
+</tr>
+<tr>
+    <td>093-C</td>
+    <td><audio controls><source src="samples/original/093_431.wav"></audio></td>
+    <td><audio controls><source src="samples/se/093-C-B/2.mel.wav"></audio></td>
+    <td><audio controls><source src="samples/se/093-C-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td><font color=red>093-N</font></td>
+    <td><audio controls><source src="samples/original/093n_431.wav"></audio></td>
+    <td  align="center">None</td>
+    <td><audio controls><source src="samples/se/093-N-P/2.mel.wav"></audio></td>
+</tr>
+<tr>
+    <td>093-D</td>
+    <td><audio controls><source src="samples/original/093d_431.wav"></audio></td>
+    <td><audio controls><source src="samples/se/093-D-B/2.mel.wav"></audio></td>  
+    <td align="center">*</td>
+</tr>
+</table>
+<br/>
+</blockquote>
